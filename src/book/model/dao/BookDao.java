@@ -1,14 +1,19 @@
 package book.model.dao;
 
+import static common.JDBCTemplate.close;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import book.model.vo.Book;
-
-import static common.JDBCTemplate.*;
 
 /*
  * DAO(Database Access Object) : DB와 연결되는 클래스로 CRUD와 관련된 쿼리 실행
@@ -20,16 +25,23 @@ import static common.JDBCTemplate.*;
  */
 public class BookDao {
 
+	
 	public ArrayList<Book> selectAllBooks(Connection conn) 
 	{
-		ArrayList<Book> list = new ArrayList();
+		ArrayList<Book> list = new ArrayList<Book>();
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String query = "SELECT * FROM BOOK";
+//		String query = "SELECT * FROM BOOK";
 		
 		try 
 		{
+			//query도 properties를 활용해서 해보자.
+			Properties prop = new Properties();
+			
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("selectAllBooks");
+			
 			stmt = conn.createStatement();
 			
 			rset = stmt.executeQuery(query);
@@ -52,6 +64,13 @@ public class BookDao {
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} 
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -59,6 +78,50 @@ public class BookDao {
 			close(rset);
 		}
 		return list;
+	}
+
+	public int insertBook(Connection conn, Book b) 
+	{
+		PreparedStatement pstmt = null;
+		int result = 0;
+			
+		try 
+		{
+			Properties prop = new Properties();
+			
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("insertBook");
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getAuthor());
+			pstmt.setString(3, b.getPub());
+			pstmt.setString(4, b.getPub_date());
+			pstmt.setInt(5, b.getPrice());
+			
+			result = pstmt.executeUpdate();
+		} 
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			close(pstmt);
+		}
+		return result;
 	}
 
 }

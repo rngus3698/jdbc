@@ -15,11 +15,27 @@ public class Book implements Serializable {
 	private String pub_date;
 	private int price;
 	
-	public Book() {
+	public Book() 
+	{
 		super();
 	}
 	
-	public Book(int bid, String title, String author, String pub, String pub_date, int price) {
+	
+	
+	public Book(String title, String author, String pub, String pub_date, int price)
+	{
+		super();
+		this.title = title;
+		this.author = author;
+		this.pub = pub;
+		this.pub_date = pub_date;
+		this.price = price;
+	}
+
+
+
+	public Book(int bid, String title, String author, String pub, String pub_date, int price)
+	{
 		super();
 		this.bid = bid;
 		this.title = title;
