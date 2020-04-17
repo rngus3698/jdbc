@@ -270,6 +270,12 @@ public class BookDao {
 		
 		Properties prop = new Properties();
 		
+		// query구문 like 쓸 때 조심~!
+//		String query = "select * from book where title like '%'||?||'%'";
+		
+//		query.properties파일
+//		selectBookTitle = select * from book where title like '%'||?||'%'
+		
 		try 
 		{
 			prop.load(new FileReader("query.properties"));
