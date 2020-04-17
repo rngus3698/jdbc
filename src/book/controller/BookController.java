@@ -43,4 +43,68 @@ public class BookController {
 		
 	}
 
+	public void searchBook(int bId) 
+	{
+		BookService bs = new BookService();
+		Book b = bs.selectBook(bId);
+		
+		if(b == null)
+		{
+			System.out.println("검색된 책이 없습니다.");
+		}
+		else
+		{
+			bm.displayBookTitle(b);
+		}
+		
+	}
+
+	public void deleteBook(int bId) {
+		
+		BookService bs = new BookService();
+		
+		int result = bs.deleteBook(bId);
+		
+		if(result > 0)
+		{
+			System.out.println("도서 정보 삭제 완료");
+		}
+		else
+		{
+			bm.displayError("delete");
+		}
+		
+	}
+
+	public void updateBook(int bId, Book b) 
+	{
+		BookService bs = new BookService();
+		int result = bs.updateBook(bId,b);
+		
+		if(result > 0)
+		{
+			System.out.println("수정 완료");
+		}
+		else
+		{
+			bm.displayError("update");
+		}
+	}
+
+	public void searchBook(String Title) 
+	{
+		BookService bs = new BookService();
+		Book b = bs.searchBook(Title);
+		
+		if(b == null)
+		{
+			System.out.println("검색한 책이 없습니다.");
+		}
+		else
+		{
+			bm.displayBookTitle(b);
+		}
+		
+	}
+
 }

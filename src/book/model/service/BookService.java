@@ -54,6 +54,69 @@ public class BookService {
 		return result;
 	}
 
+	public Book selectBook(int bId) {
+
+		Connection conn = getConnection();
+		BookDao bd = new BookDao();
+		
+		Book b = bd.selectBook(conn, bId);
+		
+		close(conn);
+		
+		return b;
+	}
+
+	public int deleteBook(int bId) {
+		Connection conn = getConnection();
+		
+		BookDao bd = new BookDao();
+		
+		int result = bd.deleteBook(conn, bId);
+		if(result > 0)
+		{
+			commit(conn);
+		}
+		else
+		{
+			rollback(conn);
+		}
+		return result;
+	}
+
+	public int updateBook(int bId, Book b) {
+		Connection conn = getConnection();
+		
+		BookDao bd = new BookDao();
+		
+		int result = bd.updateBook(conn, bId, b);
+		
+		if(result > 0)
+		{
+			commit(conn);
+		}
+		else
+		{
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public Book searchBook(String title) 
+	{
+		Connection conn = getConnection();
+		
+		BookDao bd = new BookDao();
+		
+		Book b = bd.searchBook(conn, title);
+		
+		close(conn);
+		
+		return b;
+	}
+
 	
 
 }

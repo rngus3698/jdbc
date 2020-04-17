@@ -32,16 +32,16 @@ public class BookMenu {
 				bc.insertBook(inputBook());
 				break;
 			case 2:
-				
+				bc.updateBook(inputBookId(),inputBook());
 				break;
 			case 3:
-				
+				bc.deleteBook(inputBookId());
 				break;
 			case 4:
-				
+				bc.searchBook(inputBookId());
 				break;
 			case 5:
-				
+				bc.searchBook(inputBookTitle());
 				break;
 			case 6:
 				bc.selectAll();
@@ -57,13 +57,30 @@ public class BookMenu {
 		}while(true);
 	}
 
+	private String inputBookTitle() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("검색할 제목 : ");
+		String title = sc.nextLine();
+		return title;
+	}
+
+	private int inputBookId() 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.print("도서 번호 입력 : ");
+		int bId = sc.nextInt();
+		
+		
+		return bId;
+	}
+
 	private Book inputBook() {
 		Scanner sc = new Scanner(System.in);
 		
 		Book b = null;
 		
 		System.out.println("추가 할 도서에 대한 정보를 입력하세요");
-		System.out.print("도서명");
+		System.out.print("도서명 : ");
 		String title = sc.nextLine();
 		System.out.print("저자명 : ");
 		String author = sc.nextLine();
@@ -104,8 +121,15 @@ public class BookMenu {
 		switch(string)
 		{
 			case "insert": System.out.println("도서정보 입력 실패"); break;
+			case "delete": System.out.println("도서정보 삭제 실패"); break;
+			case "update": System.out.println("도서정보 수정 실패"); break;
 			default: System.out.println("알 수 없는 에러 발생");
 		}
+	}
+
+	public void displayBookTitle(Book b) 
+	{
+		System.out.println(b);
 	}
 
 }

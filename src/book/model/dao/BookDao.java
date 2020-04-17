@@ -124,4 +124,197 @@ public class BookDao {
 		return result;
 	}
 
+	public Book selectBook(Connection conn, int bId) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		Properties prop = new Properties();
+		
+		Book b = null;
+		
+		try 
+		{
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("selectBook");
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, bId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next())
+			{
+				b = new Book();
+				b.setBid(rset.getInt("book_id"));
+				b.setTitle(rset.getString("title"));
+				b.setAuthor(rset.getString("author"));
+				b.setPub(rset.getString("publisher"));
+				b.setPub_date(rset.getString("publisher_date"));
+				b.setPrice(rset.getInt("price"));
+					
+			}
+			
+		}
+		catch (FileNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			close(pstmt);
+			close(rset);
+		}
+		return b;
+	}
+
+	public int deleteBook(Connection conn, int bId) 
+	{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		Properties prop = new Properties();
+		
+		try 
+		{
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("deleteBook");
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, bId);
+			
+			result = pstmt.executeUpdate();
+		} 
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int updateBook(Connection conn, int bId, Book b) 
+	{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		Properties prop = new Properties();
+		
+		try 
+		{
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("updateBook");
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getAuthor());
+			pstmt.setString(3, b.getPub());
+			pstmt.setString(4, b.getPub_date());
+			pstmt.setInt(5, b.getPrice());
+			pstmt.setInt(6, bId);
+			
+			result = pstmt.executeUpdate();
+		} 
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public Book searchBook(Connection conn, String title) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		Book b = null;
+		
+		Properties prop = new Properties();
+		
+		try 
+		{
+			prop.load(new FileReader("query.properties"));
+			String query = prop.getProperty("searchBookTitle");
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, title);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next())
+			{
+				b = new Book();
+				b.setBid(rset.getInt("book_id"));
+				b.setTitle(rset.getString("title"));
+				b.setAuthor(rset.getString("author"));
+				b.setPub(rset.getString("publisher"));
+				b.setPub_date(rset.getString("publisher_date"));
+				b.setPrice(rset.getInt("price"));
+				
+			}
+			
+			
+		} 
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			close(pstmt);
+			close(rset);
+		}
+		
+		return b;
+	}
+
 }
